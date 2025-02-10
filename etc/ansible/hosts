@@ -1,0 +1,8 @@
+[nodes]
+VM1 ansible_node=VM1_Public_IP
+VM2 ansible_node=VM2_Public_IP
+
+[all:vars]
+# Set the path for private key
+ansible_ssh_private_key_file=~/.ssh/ansible_key
+

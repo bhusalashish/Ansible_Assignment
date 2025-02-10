@@ -1,0 +1,34 @@
+   - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Change Nginx default port to 8080
+      lineinfile:
+        path: /etc/nginx/nginx.conf
+        regexp: '^\s*listen\s+80\s*;'
+        line: '    listen 8080;'
+      notify: Restart Nginx
+
+    - name: Deploy index.html
+      copy:
+        dest: /usr/share/nginx/html/index.html
+        content: |
+          <html>
+            <body>
+              <h1>Hello World from SJSU-{{ inventory_hostname }}</h1>
+            </body>
+          </html>
+      notify: Restart Nginx
+
+    - name: Start and Enable Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

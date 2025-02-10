@@ -1,0 +1,18 @@
+- name: Un-deploy Web Server
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Stop Nginx Service
+      systemd:
+        name: nginx
+        state: stopped
+
+    - name: Remove Nginx Package
+      yum:
+        name: nginx
+        state: absent
+
+    - name: Remove index.html
+      file:
+        path: /usr/share/nginx/html/index.html
+        state: absent
